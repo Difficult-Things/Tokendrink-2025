@@ -6,6 +6,7 @@ import mqtt from "mqtt";
 
 import { PdfDocument } from "@ironsoftware/ironpdf";
 import { Session } from "./util/session";
+import { MQTT_PASSWORD, MQTT_USERNAME } from "../../specifications/common";
 
 var argv = require("minimist")(process.argv.slice(2));
 
@@ -13,6 +14,11 @@ const session = new Session();
 
 // MQTT
 const client = mqtt.connect("mqtt://localhost:1883", {
+  clientId: "data-watcher",
+
+  username: MQTT_USERNAME,
+  password: MQTT_PASSWORD,
+
   will: {
     topic: "data-watcher/status",
     payload: Buffer.from("OFFLINE", "utf-8"),
@@ -20,6 +26,7 @@ const client = mqtt.connect("mqtt://localhost:1883", {
     retain: true,
   },
 });
+
 client.on("connect", function () {
   console.log("Connected to MQTT server");
   client.publish("data-watcher/status", "ONLINE", { retain: true });
@@ -29,17 +36,8 @@ client.on("error", function (error) {
   console.error("MQTT error: ", error);
 });
 
-client.on("offline", function () {
-  console.error("MQTT offline");
-});
-
-client.on("reconnect", function () {
-  console.error("MQTT reconnect");
-  client.connect();
-});
-
 client.on("close", function () {
-  console.error("MQTT close");
+  console.info("Connection closed");
 });
 
 // Path to watch
@@ -48,18 +46,18 @@ const pathToWatch = argv.path || DEFAULT_PATH;
 
 // Check if path is specified
 if (!argv.path) {
-  console.log("No path specified, using default: ", DEFAULT_PATH);
+  console.log("No path specified, using default path: ", DEFAULT_PATH);
 }
 
 // Clean data folder
 if (fs.existsSync(pathToWatch)) {
-  console.log("Cleaning data folder...");
+  console.log("Data folder cleaned.");
   if (argv.clean) fs.rmSync(pathToWatch, { recursive: true });
 }
 fs.mkdirSync(pathToWatch, { recursive: true });
 
 // Start watcher
-console.log("Starting watcher...");
+console.log("Watching path: ", pathToWatch);
 const watcher = chokidar.watch(pathToWatch, {
   persistent: true,
 });

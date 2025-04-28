@@ -1,4 +1,4 @@
-import { ProductType } from "../types/types";
+import { ProductType } from "../../../specifications/products";
 
 export class Generation {
   private products: { [product: string]: number } = {};
