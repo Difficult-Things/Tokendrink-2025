@@ -21,7 +21,7 @@ The game is made in Unity this year. Unity will use the MQTT messages to change 
 IDK
 
 ### PUBCARD setup
-For pubcard it is important to create items for every color and drink item. e.g. RedBeer, RedSoda, OrangeBeer etc. Look at the readme of Data-watcher to match the naming convention for items.
+For pubcard it is important to create items for every color and drink item. e.g. RedBeer, RedSoda, OrangeBeer etc. Look at Data-watcher /src/types/types.ts to match the naming convention for items.
 
 ## How to start
 Run the start.batch to run the game-server, data-watcher and dashboard. The dashboard can be opened using localhost:1883, the data-watcher folder can probably be changed, but do not know how at the moment. For unity, build the program and run the executable. If that does not work, use the demo play button.
