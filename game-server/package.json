@@ -7,7 +7,7 @@
     "dev": "pm2 start ecosystem.config.js --watch --no-daemon",
     "start": "pm2 start ecosystem.config.js",
     "start:mqtt": "npx tsx src/mqtt/index.ts",
-    "start:dashboard": "npm start next dev ../dashboard",
+    "start:dashboard": "npm --prefix ../dashboard run build && npm --prefix ../dashboard run start",
     "start:data-watcher": "npx tsx ../data-watcher/src/index.ts"
   },
   "license": "MIT",

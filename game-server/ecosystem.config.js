@@ -23,14 +23,14 @@ module.exports = {
       error_file: "./logs/data-watcher-err.log",
       out_file: "./logs/data-watcher-out.log",
     },
-    // {
-    //   name: "dashboard",
-    //   script: npmPath,
-    //   cwd: __dirname,
-    //   args: "run start:dashboard",
-    //   time: true,
-    //   error_file: "./logs/dashboard-err.log",
-    //   out_file: "./logs/dashoard-out.log",
-    // },
+    {
+      name: "dashboard",
+      script: npmPath,
+      cwd: __dirname,
+      args: "run start:dashboard",
+      time: true,
+      error_file: "./logs/dashboard-err.log",
+      out_file: "./logs/dashoard-out.log",
+    },
   ],
 };
