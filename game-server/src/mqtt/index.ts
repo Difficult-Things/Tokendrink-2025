@@ -26,6 +26,11 @@ aedes.authenticate = (client, username, password, callback) => {
     );
     callback(null, true);
   } else {
+    console.log(
+      "Client authentication failed: " + (client ? client.id : client) + " ",
+      "to broker",
+      aedes.id
+    );
     callback(
       { returnCode: 1, message: "Authentication failed" } as AuthenticateError,
       false
@@ -93,11 +98,11 @@ aedes.on("publish", async function (packet, client) {
   );
 });
 
-server.listen(mqttPort, function () {
-  console.log("MQTT server started and listening on port ", mqttPort);
+server.listen(mqttPort, () => {
+  console.log("MQTT server started and listening on port", mqttPort);
 });
-ws.createServer({ server: httpServer }, aedes.handle);
 
-httpServer.listen(websocketPort, function () {
-  console.log("websocket server listening on port ", websocketPort);
+ws.createServer({ server: httpServer }, aedes.handle);
+httpServer.listen(websocketPort, () => {
+  console.log("Websocket server listening on port", websocketPort);
 });
