@@ -13,9 +13,15 @@ Data-watcher is a program that looks at the content of a folder and when a file 
 ### Dashboard
 The dashboard is the main controller for everything. It will automatically get the results from Data-watcher, but everything can be overwritten using the dashboard in case e.g. a team is winning too much. Whenever a round should start, set the correct values in the dashboard and press the execute command (or whatever it is called, I have not seen the dashboard for a year).
 ### Game-server
+Game-server is currently mainly a communication tool called MQTT between all the other systems. You should not have to touch this code, and it will just run, that is a promise.
 ### Game
+The game is made in Unity this year. Unity will use the MQTT messages to change scenes and textures.
+
+### Pullenwand (OPTIONAL, PLEASE SKIP)
+IDK
 
 ## How to start
+Run the start.batch to run the game-server, data-watcher and dashboard. The dashboard can be opened using localhost:1883, the data-watcher folder can probably be changed, but do not know how at the moment.
 
 ## WHO NOT TO CONTACT
 Do not contact Gino or Joris for any problems you encounter, we also forgot how it works.
