@@ -37,5 +37,22 @@ The game-server uses the following channels.
 ### Game Channels
 - /game/status
 
+Sends the status of the game. The ranking is ordered from top to bottom, with the number indicating the index of the team in the list.
+``` JSON
+{
+    "round":2,
+    "state":"drinking",
+    "ranking":[1,6,4,3,5,2]
+}
+```
+
+## Order of Generations
+1. Red
+2. Green
+3. Blue
+4. Purple
+5. Orange
+6. Gray
+
 ## WHO NOT TO CONTACT
 Do not contact Gino or Joris for any problems you encounter, we also forgot how it works.
