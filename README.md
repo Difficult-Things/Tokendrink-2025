@@ -26,5 +26,16 @@ For pubcard it is important to create items for every color and drink item. e.g.
 ## How to start
 Run the start.batch to run the game-server, data-watcher and dashboard. The dashboard can be opened using localhost:1883, the data-watcher folder can probably be changed, but do not know how at the moment. For unity, build the program and run the executable. If that does not work, use the demo play button.
 
+## MQTT Channels
+The game-server uses the following channels.
+
+### Status Channels
+- /game/status
+- /pullenwand/status
+- /data-watcher/status
+
+### Game Channels
+- /game/status
+
 ## WHO NOT TO CONTACT
 Do not contact Gino or Joris for any problems you encounter, we also forgot how it works.

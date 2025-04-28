@@ -8,7 +8,6 @@ import "./alertStyling.css";
 
 import Nestable, { Item } from "react-nestable";
 import "react-nestable/dist/styles/index.css";
-import { Button } from "./ui/button";
 
 export function Control(props: any) {
   const [round, setRound] = React.useState("1");
@@ -118,7 +117,7 @@ export function Control(props: any) {
                     className="Button red"
                     onClick={() => {
                       props.client.publish(
-                        "gamevisuals/gamestate",
+                        "game/state",
                         JSON.stringify({
                           round: parseInt(round),
                           state: roundState,

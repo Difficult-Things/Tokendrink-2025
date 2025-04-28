@@ -24,9 +24,9 @@ export default function Home() {
     if (client) {
       client.on("connect", () => {
         console.log("Connected");
-        // client.subscribe("gamevisuals/status");
-        // client.subscribe("pullenwand/status");
-        // client.subscribe("data-watcher/#");
+        client.subscribe("game/status");
+        client.subscribe("pullenwand/status");
+        client.subscribe("data-watcher/#");
       });
 
       client.on("close", () => {

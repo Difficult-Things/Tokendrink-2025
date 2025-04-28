@@ -3,7 +3,7 @@ import * as React from "react";
 import { DataTable } from "./stats/data-table";
 
 import { columns } from "./stats/columns";
-import { GenerationColour, GenerationScore } from "@/types/data";
+import { GenerationScore } from "@/types/data";
 import { Button } from "./ui/button";
 import { ArrowLeft } from "lucide-react";
 import { SortingState } from "@tanstack/react-table";
@@ -26,7 +26,6 @@ export function Stats(props: any) {
   const sendRankingUpdate = () => {
     if (dataTableRankingUpdate.current) {
       const newRanking = dataTableRankingUpdate.current.updateRanking();
-      console.log(newRanking);
       props.setRanking(newRanking);
     }
   };
