@@ -14,7 +14,7 @@ const session = new Session();
 
 // MQTT
 const client = mqtt.connect("mqtt://localhost:1883", {
-  clientId: "data-watcher",
+  clientId: "data-watcher-" + Math.random().toString(16).substr(2, 8),
 
   username: MQTT_USERNAME,
   password: MQTT_PASSWORD,
