@@ -60,6 +60,7 @@ fs.mkdirSync(pathToWatch, { recursive: true });
 console.log("Watching path: ", pathToWatch);
 const watcher = chokidar.watch(pathToWatch, {
   persistent: true,
+  ignoreInitial: true,
 });
 
 // On Watcher ready

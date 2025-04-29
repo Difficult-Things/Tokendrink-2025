@@ -39,15 +39,15 @@ export function Stats(props: any) {
           <ArrowLeft /> <span className="text-sm">Send Ranking</span>
         </Button>
 
-        {/* {props.data == null ? <p>Loading...</p> : <DataTable columns={columns} data={props.data} />} */}
-        {mockData == null ? <p>Loading...</p> :
+        {props.data == null ? <p>Loading...</p> : <DataTable columns={columns} data={props.data} sorting={sorting} setSorting={setSorting} ref={dataTableRankingUpdate} />}
+        {/* {mockData == null ? <p>Loading...</p> :
           <DataTable
             columns={columns}
             data={mockData}
             sorting={sorting}
             setSorting={setSorting}
             ref={dataTableRankingUpdate}
-          />}
+          />} */}
 
       </div>
     </div>
