@@ -33,9 +33,10 @@ The game-server uses the following channels.
 - /game/status
 - /pullenwand/status
 - /data-watcher/status
+- /dashboard/status
 
 ### Game Channels
-- /game/status
+- /dashboard/status
 
 Sends the status of the game. The ranking is ordered from top to bottom, with the number indicating the index of the team in the list.
 ``` JSON

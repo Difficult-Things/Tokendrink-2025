@@ -54,6 +54,8 @@ const getConnectionStatus = (status: Status) => {
       return getConnectionIcon(status) + " Connected";
     case "offline":
       return getConnectionIcon(status) + " Disconnected";
+    case "error":
+      return getConnectionIcon(status) + " Error";
     default:
       return getConnectionIcon(status) + " Unknown";
   }
@@ -64,6 +66,8 @@ const getConnectionIcon = (status: Status) => {
       return "✅";
     case "offline":
       return "❌";
+    case "error":
+      return "⚠️";
     default:
       return "❓";
   }
@@ -75,6 +79,8 @@ const getConnectionColor = (status: Status) => {
       return "text-green-500";
     case "offline":
       return "text-red-500";
+    case "error":
+      return "text-yellow-500";
     default:
       return "text-gray-500";
   }
