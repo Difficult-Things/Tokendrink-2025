@@ -125,7 +125,7 @@ export function Control({
                     className="Button red"
                     onClick={() => {
                       mqttClient.publish(
-                        "game/state",
+                        "dashboard/data",
                         JSON.stringify({
                           round: parseInt(round),
                           state: roundState,

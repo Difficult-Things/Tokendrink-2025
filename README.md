@@ -36,9 +36,9 @@ The game-server uses the following channels.
 - /dashboard/status
 
 ### Game Channels
-- /dashboard/status
+- /dashboard/data
 
-Sends the status of the game. The ranking is ordered from top to bottom, with the number indicating the index of the team in the list.
+Sends the data of the game. The ranking is ordered from top to bottom, with the number indicating the index of the team in the list.
 ``` JSON
 {
     "round":2,
