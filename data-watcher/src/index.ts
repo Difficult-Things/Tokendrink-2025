@@ -4,9 +4,9 @@ import fs from "fs";
 import path from "path";
 import mqtt from "mqtt";
 
-import { PdfDocument } from "@ironsoftware/ironpdf";
-import { Session } from "./util/session";
+import { Session } from "./utils/session";
 import { MQTT_PASSWORD, MQTT_USERNAME } from "../../specifications/common";
+import { getLinesFromPDF } from "./utils/pdf";
 
 var argv = require("minimist")(process.argv.slice(2));
 
@@ -70,24 +70,20 @@ watcher.on("ready", () => {
 });
 
 // On file added
-watcher.on("add", async (path) => {
+watcher.on("add", async (filePath) => {
   const time = new Date().toLocaleTimeString();
-  console.log(`${time}: File ${path} has been added.`);
+  console.log(`${time}: File ${filePath} has been added.`);
 
   // Check if filetype is pdf
-  if (!path.endsWith(".pdf")) return;
+  if (!filePath.endsWith(".pdf")) return;
 
   try {
-    // Handle data to game server
-    const pdf = await PdfDocument.fromFile(path);
-    const text = await pdf.extractText();
+    session.processPDFData(filePath);
+    session.logData();
 
-    session.processPDF(text);
-    session.showData();
-
-    const data = JSON.stringify(session.getData());
-    console.log(data);
-    client.publish("data-watcher/data", data);
+    // const data = JSON.stringify(session.getData());
+    // console.log(data);
+    // client.publish("data-watcher/data", data);
   } catch (err) {
     console.error(err);
   }

@@ -3,20 +3,25 @@ import { ProductType } from "../../../specifications/products";
 export class Generation {
   private products: { [product: string]: number } = {};
 
-  setProduct(product: ProductType, amount: number): void {
-    this.products[product] = amount;
+  setProduct(product: ProductType, quantity: number): void {
+    this.products[product] = quantity;
   }
 
-  addProduct(product: ProductType, amount: number): void {
+  // Not used for current implementation as PDF data contains absolute values
+  addProduct(product: ProductType, quantity: number): void {
     if (this.products[product]) {
-      this.products[product] += amount;
+      this.products[product] += quantity;
     } else {
-      this.products[product] = amount;
+      this.products[product] = quantity;
     }
   }
 
   getProduct(product: ProductType): number {
     return this.products[product] || 0;
+  }
+
+  getProducts(): { [product: string]: number } {
+    return this.products;
   }
 
   getScore(): number {

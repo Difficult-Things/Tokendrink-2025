@@ -13,9 +13,11 @@
   "license": "MIT",
   "dependencies": {
     "aedes": "^0.51.3",
+    "pm2": "^6.0.5",
     "websocket-stream": "^5.5.2"
   },
   "devDependencies": {
+    "jest": "^29.7.0",
     "typescript": "^5.8.3"
   }
 }
