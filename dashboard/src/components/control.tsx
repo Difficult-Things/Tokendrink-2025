@@ -9,7 +9,15 @@ import "./alertStyling.css";
 import Nestable, { Item } from "react-nestable";
 import "react-nestable/dist/styles/index.css";
 
-export function Control(props: any) {
+export interface ControlProps {
+  mqttClient: any;
+  setRanking: (ranking: Item[]) => void;
+  ranking: Item[];
+}
+
+export function Control({
+  mqttClient: mqttClient, setRanking, ranking
+}: ControlProps) {
   const [round, setRound] = React.useState("1");
   const [roundState, setRoundState] = React.useState("drinking");
 
@@ -28,18 +36,18 @@ export function Control(props: any) {
   }
 
   const doSomethingWithChange = (items: any) => {
-    props.setRanking(items.items);
+    setRanking(items.items);
     return true;
   };
 
   React.useEffect(() => {
-    const initialRanking = Object.values(GenerationColours).map((colour, index) => ({
-      text: colour.charAt(0).toUpperCase() + colour.slice(1),
+    const initialRanking = Object.values(GenerationColours).map((gen, index) => ({
+      text: gen.charAt(0).toUpperCase() + gen.slice(1),
       id: index + 1,
     }));
 
-    props.setRanking(initialRanking);
-  }, []);
+    setRanking(initialRanking);
+  }, [setRanking]);
 
   return (
     <div className="flex flex-col m-4 gap-4">
@@ -50,7 +58,7 @@ export function Control(props: any) {
 
       <div className="flex flex-row items-center justify-center">
         <div className="m-5">
-          <Nestable maxDepth={1} onChange={doSomethingWithChange} items={props.ranking} renderItem={renderItem} />
+          <Nestable maxDepth={1} onChange={doSomethingWithChange} items={ranking} renderItem={renderItem} />
         </div>
 
         <div className="flex row">
@@ -116,12 +124,12 @@ export function Control(props: any) {
                   <button
                     className="Button red"
                     onClick={() => {
-                      props.client.publish(
+                      mqttClient.publish(
                         "game/state",
                         JSON.stringify({
                           round: parseInt(round),
                           state: roundState,
-                          ranking: props.ranking.map((item: Item) => (
+                          ranking: ranking.map((item: Item) => (
                             item.id
                           )),
                         })

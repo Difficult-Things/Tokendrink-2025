@@ -11,7 +11,7 @@ import NetworkState from "@/components/network-state";
 import { Item } from "react-nestable";
 
 export default function Home() {
-  const [client, setClient] = React.useState<any>(null);
+  const [mqttClient, setClient] = React.useState<any>(null);
 
   const [pullenwandConnected, setPullenwandConnected] = React.useState<Status>(OFFLINE);
   const [maingameConnected, setMaingameConnected] = React.useState<Status>(OFFLINE);
@@ -21,25 +21,27 @@ export default function Home() {
   const [ranking, setRanking] = React.useState<Item[]>([]);
 
   useEffect(() => {
-    if (client) {
-      client.on("connect", () => {
+    if (mqttClient) {
+      mqttClient.on("connect", () => {
         console.log("Connected");
-        client.subscribe("game/status");
-        client.subscribe("pullenwand/status");
-        client.subscribe("data-watcher/#");
+        mqttClient.subscribe("game/status");
+        mqttClient.subscribe("pullenwand/status");
+        mqttClient.subscribe("data-watcher/#");
+
+        mqttClient.publish("dashboard/status", "ONLINE", { qos: 1 });
       });
 
-      client.on("close", () => {
+      mqttClient.on("close", () => {
         console.log("Connection closed");
       });
 
-      client.on("error", (err: any) => {
+      mqttClient.on("error", (err: any) => {
         console.error("Connection error: ", err);
-        client.end();
+        mqttClient.end();
       });
 
-      client.on("message", (topic: string, message: any) => {
-        if (topic === "gamevisuals/status") {
+      mqttClient.on("message", (topic: string, message: any) => {
+        if (topic === "game/status") {
           setMaingameConnected(message.toString() as Status);
         }
         if (topic === "pullenwand/status") {
@@ -50,11 +52,12 @@ export default function Home() {
         }
         if (topic === "data-watcher/data") {
           const json = JSON.parse(message.toString());
+          console.log("Data: ", json);
           setData(json);
         }
       });
     }
-  }, [client]);
+  }, [mqttClient]);
 
   useEffect(() => {
     setClient(mqtt.connect({
@@ -62,7 +65,7 @@ export default function Home() {
       username: MQTT_USERNAME,
       password: MQTT_PASSWORD,
       port: 8888,
-      clientId: "game-dashboard-" + Math.random().toString(16).slice(2),
+      clientId: "dashboard-" + Math.random().toString(16).slice(2),
     }));
   }, []);
 
@@ -75,7 +78,7 @@ export default function Home() {
       <div className="flex-grow flex-shrink basis-auto">
         <div className="flex flex-row">
           <div className="flex-grow flex-shrink basis-0 mx-4 rounded-lg border">
-            <Control client={client} ranking={ranking} setRanking={setRanking} />
+            <Control mqttClient={mqttClient} ranking={ranking} setRanking={setRanking} />
           </div>
           <div className="flex-grow flex-shrink basis-0 mx-4 rounded-lg border">
             <Stats data={data} setRanking={setRanking} />
@@ -86,7 +89,7 @@ export default function Home() {
       <footer className="flex justify-between items-center p-4 mx-8">
         <p className="text-sm">© {new Date().getFullYear()} TOKENDRINK</p>
         <NetworkState
-          mqttState={client ? ONLINE : OFFLINE}
+          mqttState={mqttClient ? ONLINE : OFFLINE}
           mainGameState={maingameConnected}
           pullenwandState={pullenwandConnected}
           dataWatcherState={dataWatcherConnected}

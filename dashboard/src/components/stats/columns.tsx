@@ -7,7 +7,7 @@ import { GenerationScore } from "@/types/data"
 
 export const columns: ColumnDef<GenerationScore>[] = [
     {
-        accessorKey: "colour",
+        accessorKey: "gen",
         header: ({ column }) => {
             return (
                 <Button
@@ -22,7 +22,7 @@ export const columns: ColumnDef<GenerationScore>[] = [
         }
     },
     {
-        accessorKey: "beers",
+        accessorKey: "beer",
         header: ({ column }) => {
             return (
                 <Button
@@ -37,7 +37,7 @@ export const columns: ColumnDef<GenerationScore>[] = [
         },
     },
     {
-        accessorKey: "sodas",
+        accessorKey: "soda",
         header: ({ column }) => {
             return (
                 <Button

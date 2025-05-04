@@ -53,7 +53,7 @@ export const DataTable = React.forwardRef<Handle, DataTableProps<any, any>>(
       const sortedData = table.getSortedRowModel().rows.map(row => row.original)
       const newRanking: Item[] = sortedData.map((item, index) => {
         // @ts-ignore
-        const itemColour = item.colour as GenerationColour
+        const itemColour = item.gen as GenerationColour
         return { text: itemColour, id: colourToGenerationIndex(itemColour) + 1 }
       })
       return newRanking
