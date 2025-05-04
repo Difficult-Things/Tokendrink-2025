@@ -1,8 +1,5 @@
 import Aedes, { AuthenticateError } from "aedes";
-import {
-  MQTT_PASSWORD,
-  MQTT_USERNAME,
-} from "../../../specifications/common.ts";
+import { MQTT_PASSWORD, MQTT_USERNAME } from "../../../specifications/mqtt.ts";
 
 const aedes = new Aedes();
 const server = require("net").createServer(aedes.handle);

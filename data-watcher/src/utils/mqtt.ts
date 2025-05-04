@@ -17,7 +17,11 @@ export class MqttClient {
       password: MQTT_PASSWORD,
       will: {
         topic: TOPIC_DATA_WATCHER_STATUS,
-        payload: Buffer.from("OFFLINE", "utf-8"),
+        payload: Buffer.from(
+          JSON.stringify({
+            status: "offline",
+          })
+        ),
         qos: 1,
         retain: true,
       },
@@ -25,9 +29,16 @@ export class MqttClient {
 
     this.client.on("connect", () => {
       console.log("Connected to MQTT server");
-      this.client?.publish(TOPIC_DATA_WATCHER_STATUS, "ONLINE", {
-        retain: true,
-      });
+      this.client?.publish(
+        TOPIC_DATA_WATCHER_STATUS,
+        JSON.stringify({
+          status: "online",
+        }),
+        {
+          qos: 1,
+          retain: true,
+        }
+      );
     });
 
     this.client.on("error", (error) => {
@@ -59,6 +70,28 @@ export class MqttClient {
           console.error("Error publishing message: ", error);
         } else {
           console.log("Message published successfully");
+        }
+      }
+    );
+  }
+
+  sendOfflineStatus() {
+    if (!this.client) {
+      console.error("MQTT client is not connected");
+      return;
+    }
+
+    this.client.publish(
+      TOPIC_DATA_WATCHER_STATUS,
+      JSON.stringify({
+        status: "offline",
+      }),
+      { qos: 1, retain: true },
+      (error) => {
+        if (error) {
+          console.error("Error publishing message: ", error);
+        } else {
+          console.log("Offline status published successfully");
         }
       }
     );

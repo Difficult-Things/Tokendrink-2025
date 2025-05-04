@@ -50,9 +50,9 @@ export default function NetworkState({
 
 const getConnectionStatus = (status: Status) => {
   switch (status) {
-    case "ONLINE":
+    case "online":
       return getConnectionIcon(status) + " Connected";
-    case "OFFLINE":
+    case "offline":
       return getConnectionIcon(status) + " Disconnected";
     default:
       return getConnectionIcon(status) + " Unknown";
@@ -60,9 +60,9 @@ const getConnectionStatus = (status: Status) => {
 }
 const getConnectionIcon = (status: Status) => {
   switch (status) {
-    case "ONLINE":
+    case "online":
       return "✅";
-    case "OFFLINE":
+    case "offline":
       return "❌";
     default:
       return "❓";
@@ -71,9 +71,9 @@ const getConnectionIcon = (status: Status) => {
 
 const getConnectionColor = (status: Status) => {
   switch (status) {
-    case "ONLINE":
+    case "online":
       return "text-green-500";
-    case "OFFLINE":
+    case "offline":
       return "text-red-500";
     default:
       return "text-gray-500";

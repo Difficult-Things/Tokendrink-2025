@@ -57,3 +57,17 @@ watcher.on("add", async (filePath) => {
     console.error(err);
   }
 });
+
+process.on("exit", () => {
+  mqtt.sendOfflineStatus();
+});
+
+process.on("SIGINT", () => {
+  mqtt.sendOfflineStatus();
+  process.exit(0);
+});
+
+process.on("SIGTERM", () => {
+  mqtt.sendOfflineStatus();
+  process.exit(0);
+});

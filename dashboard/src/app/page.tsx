@@ -6,13 +6,14 @@ import mqtt from "mqtt";
 import { Control } from "@/components/control";
 import { Header } from "@/components/header";
 import { Stats } from "@/components/stats";
-import { Status, OFFLINE, ONLINE, MQTT_USERNAME, MQTT_PASSWORD } from "@/types/network";
+import { Status, MQTT_USERNAME, MQTT_PASSWORD, OFFLINE, ONLINE, StatusMessage } from "@/types/network";
 import NetworkState from "@/components/network-state";
 import { Item } from "react-nestable";
 
 export default function Home() {
-  const [mqttClient, setClient] = React.useState<any>(null);
+  const [mqttClient, setClient] = React.useState<mqtt.MqttClient | null>(null);
 
+  const [mqttConnected, setMqttConnected] = React.useState<Status>(OFFLINE);
   const [pullenwandConnected, setPullenwandConnected] = React.useState<Status>(OFFLINE);
   const [maingameConnected, setMaingameConnected] = React.useState<Status>(OFFLINE);
   const [dataWatcherConnected, setDataWatcherConnected] = React.useState<Status>(OFFLINE);
@@ -23,37 +24,53 @@ export default function Home() {
   useEffect(() => {
     if (mqttClient) {
       mqttClient.on("connect", () => {
-        console.log("Connected");
+        console.log("MQTT Connected");
+        setMqttConnected(ONLINE);
+
         mqttClient.subscribe("game/status");
         mqttClient.subscribe("pullenwand/status");
         mqttClient.subscribe("data-watcher/#");
 
-        mqttClient.publish("dashboard/status", "ONLINE", { qos: 1 });
+        mqttClient.publish("dashboard/status", JSON.stringify({
+          status: "online",
+        }), { qos: 1, retain: true });
       });
 
       mqttClient.on("close", () => {
-        console.log("Connection closed");
+        console.log("MQTT Connection closed");
+        setMqttConnected(OFFLINE);
       });
 
       mqttClient.on("error", (err: any) => {
         console.error("Connection error: ", err);
         mqttClient.end();
+        setMqttConnected(OFFLINE);
       });
 
-      mqttClient.on("message", (topic: string, message: any) => {
-        if (topic === "game/status") {
-          setMaingameConnected(message.toString() as Status);
+      mqttClient.on("message", (topic: string, message: Buffer, packet: mqtt.IPublishPacket) => {
+        if (topic.includes("/status")) {
+          const statusMessage = JSON.parse(message.toString()) as StatusMessage;
+
+          if (topic.includes("game/")) {
+            setMaingameConnected(statusMessage.status as Status);
+          }
+          else if (topic.includes("pullenwand/")) {
+            setPullenwandConnected(statusMessage.status as Status);
+          }
+          else if (topic.includes("data-watcher/")) {
+            setDataWatcherConnected(statusMessage.status as Status);
+          }
         }
-        if (topic === "pullenwand/status") {
-          setPullenwandConnected(message.toString() as Status);
-        }
-        if (topic === "data-watcher/status") {
-          setDataWatcherConnected(message.toString() as Status);
-        }
-        if (topic === "data-watcher/data") {
-          const json = JSON.parse(message.toString());
-          console.log("Data: ", json);
-          setData(json);
+
+        if (topic.includes("/data")) {
+          if (topic.includes("data-watcher/")) {
+            try {
+              const data = JSON.parse(message.toString());
+              setData(data);
+            } catch (error) {
+              console.error("Error parsing data: ", error);
+            }
+          }
         }
       });
     }
@@ -66,6 +83,14 @@ export default function Home() {
       password: MQTT_PASSWORD,
       port: 8888,
       clientId: "dashboard-" + Math.random().toString(16).slice(2),
+      will: {
+        topic: "dashboard/status",
+        payload: Buffer.from(JSON.stringify({
+          status: "offline",
+        })),
+        qos: 1,
+        retain: true,
+      },
     }));
   }, []);
 
@@ -89,10 +114,10 @@ export default function Home() {
       <footer className="flex justify-between items-center p-4 mx-8">
         <p className="text-sm">© {new Date().getFullYear()} TOKENDRINK</p>
         <NetworkState
-          mqttState={mqttClient ? ONLINE : OFFLINE}
-          mainGameState={maingameConnected}
-          pullenwandState={pullenwandConnected}
-          dataWatcherState={dataWatcherConnected}
+          mqttState={mqttConnected}
+          mainGameState={mqttConnected ? maingameConnected : "unknown"}
+          pullenwandState={mqttConnected ? pullenwandConnected : "unknown"}
+          dataWatcherState={mqttConnected ? dataWatcherConnected : "unknown"}
         />
         <p>Made with 💕 by the Difficult Things Committee</p>
       </footer>
