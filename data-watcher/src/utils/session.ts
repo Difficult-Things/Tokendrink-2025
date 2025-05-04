@@ -6,7 +6,6 @@ import {
   START_OF_TABLE,
 } from "../../../specifications/products";
 import { Generation } from "./generation";
-import { getLinesFromPDF } from "./pdf";
 import { getProductAndQuantity } from "./products";
 
 export class Session {
@@ -142,9 +141,6 @@ export class Session {
   }
 
   constructor() {
-    // for (const gen of allGenerations) {
-    //   this.generations[gen] = new Generation();
-    // }
     for (const color of TEAM_COLORS) {
       this.generations[color] = new Generation();
     }

@@ -10,12 +10,12 @@ import { SortingState } from "@tanstack/react-table";
 import { Item } from "react-nestable";
 
 const mockData: GenerationScore[] = [
-  { colour: "red", beers: 10, sodas: 5, score: 15 },
-  { colour: "green", beers: 5, sodas: 10, score: 15 },
-  { colour: "blue", beers: 7, sodas: 7, score: 14 },
-  { colour: "purple", beers: 8, sodas: 6, score: 14 },
-  { colour: "orange", beers: 6, sodas: 8, score: 14 },
-  { colour: "gray", beers: 9, sodas: 5, score: 14 },
+  { gen: "red", beer: 10, soda: 5, score: 15 },
+  { gen: "green", beer: 5, soda: 10, score: 15 },
+  { gen: "blue", beer: 7, soda: 7, score: 14 },
+  { gen: "purple", beer: 8, soda: 6, score: 14 },
+  { gen: "orange", beer: 6, soda: 8, score: 14 },
+  { gen: "gray", beer: 9, soda: 5, score: 14 },
 ];
 
 export function Stats(props: any) {

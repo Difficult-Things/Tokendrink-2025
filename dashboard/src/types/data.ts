@@ -1,18 +1,11 @@
 export type GenerationScore = {
-  colour: string;
-  beers: number;
-  sodas: number;
+  gen: string;
+  beer: number;
+  soda: number;
   score: number;
 };
 
-export const GenerationColours = [
-  "red",
-  "green",
-  "blue",
-  "purple",
-  "orange",
-  "gray",
-];
+export const GenerationColours = ["red", "green", "blue", "purple", "orange"];
 
 export type GenerationColour = (typeof GenerationColours)[number];
 

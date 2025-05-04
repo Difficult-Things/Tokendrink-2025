@@ -2,43 +2,14 @@ import chokidar from "chokidar";
 
 import fs from "fs";
 import path from "path";
-import mqtt from "mqtt";
 
 import { Session } from "./utils/session";
-import { MQTT_PASSWORD, MQTT_USERNAME } from "../../specifications/common";
-import { getLinesFromPDF } from "./utils/pdf";
+import { MqttClient } from "./utils/mqtt";
 
 var argv = require("minimist")(process.argv.slice(2));
 
 const session = new Session();
-
-// MQTT
-const client = mqtt.connect("mqtt://localhost:1883", {
-  clientId: "data-watcher-" + Math.random().toString(16).substr(2, 8),
-
-  username: MQTT_USERNAME,
-  password: MQTT_PASSWORD,
-
-  will: {
-    topic: "data-watcher/status",
-    payload: Buffer.from("OFFLINE", "utf-8"),
-    qos: 1,
-    retain: true,
-  },
-});
-
-client.on("connect", function () {
-  console.log("Connected to MQTT server");
-  client.publish("data-watcher/status", "ONLINE", { retain: true });
-});
-
-client.on("error", function (error) {
-  console.error("MQTT error: ", error);
-});
-
-client.on("close", function () {
-  console.info("Connection closed");
-});
+const mqtt = new MqttClient();
 
 // Path to watch
 const DEFAULT_PATH = path.join(process.cwd(), "tokendrink-pubcard-data");
@@ -81,9 +52,7 @@ watcher.on("add", async (filePath) => {
     session.processPDFData(filePath);
     session.logData();
 
-    // const data = JSON.stringify(session.getData());
-    // console.log(data);
-    // client.publish("data-watcher/data", data);
+    mqtt.sendUpdatedSession(session);
   } catch (err) {
     console.error(err);
   }
