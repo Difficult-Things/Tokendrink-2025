@@ -24,7 +24,21 @@ IDK
 For pubcard it is important to create items for every color and drink item. e.g. RedBeer, RedSoda, OrangeBeer etc. Look at specifications/products to match the naming convention for items.
 
 ## How to start
-Run the start.batch to run the game-server, data-watcher and dashboard. The dashboard can be opened using localhost:1883, the data-watcher folder can probably be changed, but do not know how at the moment. For unity, build the program and run the executable. If that does not work, use the demo play button.
+```
+cd ./game-server
+(first launch only) npm install -g pm2
+(first launch only) npm install
+npm run start
+```
+
+## Other useful commands
+```
+pm2 list # list all processes
+pm2 logs # show logs of all processes
+pm2 stop <id|all> # stop a process
+pm2 restart <id|all> # restart a process
+pm2 start <id|all> # start a process
+```
 
 ## MQTT Channels
 The game-server uses the following channels.
@@ -43,7 +57,7 @@ Sends the data of the game. The ranking is ordered from top to bottom, with the 
 {
     "round":2,
     "state":"drinking",
-    "ranking":[1,6,4,3,5,2]
+    "ranking":[1,4,3,5,2]
 }
 ```
 
@@ -53,7 +67,7 @@ Sends the data of the game. The ranking is ordered from top to bottom, with the 
 3. Blue
 4. Purple
 5. Orange
-6. Gray
 
 ## WHO NOT TO CONTACT
-Do not contact Gino or Joris for any problems you encounter, we also forgot how it works.
+1. Keihard janken
+2. Do not contact Gino or Joris for any problems you encounter, we also forgot how it works.

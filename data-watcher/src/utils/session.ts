@@ -6,59 +6,14 @@ import {
   START_OF_TABLE,
 } from "../../../specifications/products";
 import { Generation } from "./generation";
+import { getLinesFromPDF } from "./pdf";
 import { getProductAndQuantity } from "./products";
 
 export class Session {
   private generations: { [generation: string]: Generation } = {};
 
   async processPDFData(filePath: string): Promise<void> {
-    // const lines = await getLinesFromPDF(filePath);
-
-    const lines = [
-      "",
-      "",
-      "Session report",
-      "GMM session",
-      "Report print date: 4/28/2025 7:36:09 PM",
-      "ReferenceTypeStart dateStarted byEnd dateEnded byVisitors",
-      "#01356GMM4/28/2025 4:45:00 PMNeomi van KuijkSession not ended9",
-      "Total revenue",
-      "GrossDiscountNet",
-      "€ 42.05€ 0.00€ 42.05",
-      "Revenue per VAT rate",
-      "VAT rateRevenue amount (excl. VAT)VAT amountRevenue amount (incl. VAT)",
-      "21.00%€ 30.69€ 6.46€ 37.15",
-      "9.00%€ 4.49€ 0.41€ 4.90",
-      "€ 35.18€ 6.87€ 42.05",
-      "Revenue per sales product",
-      "Sales product nameQuantityGrossDiscountNet",
-      "Cassis_Blue1€ 0.74€ 0.00€ 0.74",
-      "Coca-Cola_Red4€ 2.80€ 0.00€ 2.80",
-      "Corona5€ 10.90€ 0.00€ 10.90",
-      "Custom Pul0€ 0.00€ 0.00€ 0.00",
-      "Delirium Tremens1€ 2.77€ 0.00€ 2.77",
-      "Glas Hertog Jan2€ 2.00€ 0.00€ 2.00",
-      "€ 42.05€ 0.00€ 42.05",
-      "28-04-2025, 19:36Session report - Pubcard",
-      "https://app.pubcard.nl/Admin/Sessions/Report/10363?returnPage=11/2",
-      "",
-      "Ijsbad1€ 4.12€ 0.00€ 4.12",
-      "Kasteel Rouge7€ 17.36€ 0.00€ 17.36",
-      "Liefmans0€ 0.00€ 0.00€ 0.00",
-      "Liefmans 0.01€ 1.36€ 0.00€ 1.36",
-      "€ 42.05€ 0.00€ 42.05",
-      "Revenue per payment method",
-      "Payment methodNumber of transactionsAmount",
-      "Token20€ 42.05",
-      "20€ 42.05",
-      "Account charges",
-      "Per payment method",
-      "Payment methodNumber of chargesTotal amount",
-      "PIN (Charge)1€ 5.00",
-      "1€ 5.00",
-      "28-04-2025, 19:36Session report - Pubcard",
-      "https://app.pubcard.nl/Admin/Sessions/Report/10363?returnPage=12/2",
-    ];
+    const lines = await getLinesFromPDF(filePath);
 
     const tableStartIndex = lines.findIndex((line) =>
       line.includes(START_OF_TABLE)
